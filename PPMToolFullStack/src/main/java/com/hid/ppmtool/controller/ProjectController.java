@@ -1,6 +1,7 @@
 package com.hid.ppmtool.controller;
 
 import com.hid.ppmtool.domain.Project;
+import com.hid.ppmtool.services.MapValidationErrorService;
 import com.hid.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,13 +29,15 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @PostMapping("/project")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
-        if (result.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error : result.getFieldErrors())
-            errorMap.put(error.getField(), error.getDefaultMessage());
-            return new ResponseEntity<Map<String,String>>(errorMap, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+
+        ResponseEntity<?> error = this.mapValidationErrorService.mapValidationError(result);
+        if (error != null) {
+            return error;
         }
         return new ResponseEntity<>(projectService.saveOrUpdateProject(project), HttpStatus.CREATED);
     }
