@@ -16,13 +16,24 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public Project saveOrUpdateProject(Project project){
+    public Project saveOrUpdateProject(Project project) {
         try {
 
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
             return this.projectRepository.save(project);
         } catch (Exception t) {
-            throw new ProjectIdException("Project ID '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
+            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
         }
+    }
+
+    public Project findProjectIdentifier(String identifier) {
+       // try {
+            return this.projectRepository.findByProjectIdentifier(identifier);
+
+        //} catch (Exception ex) {
+
+          //  throw new
+        //}
+
     }
 }
