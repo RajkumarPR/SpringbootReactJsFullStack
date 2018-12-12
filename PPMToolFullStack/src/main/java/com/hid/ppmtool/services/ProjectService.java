@@ -6,6 +6,8 @@ import com.hid.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.StreamSupport;
+
 /**
  * @author rraigonde
  * @date 07-12-2018 01:04
@@ -27,13 +29,32 @@ public class ProjectService {
     }
 
     public Project findProjectIdentifier(String identifier) {
-       // try {
-            return this.projectRepository.findByProjectIdentifier(identifier);
+        Project project = this.projectRepository.findByProjectIdentifier(identifier);
 
-        //} catch (Exception ex) {
+        if (project == null) {
+            throw new ProjectIdException("Poject ID '" + identifier + "' does not exists");
+        }
+        return project;
+    }
 
-          //  throw new
-        //}
+    public Iterable<Project> findAllProjects() {
 
+        Iterable<Project> projects = this.projectRepository.findAll();
+        long size = StreamSupport.stream(projects.spliterator(), false).count();
+        if (size == 0) {
+            throw new ProjectIdException("No project exists");
+        }
+        return projects;
+    }
+
+    public void deleteProjectByProjectIdentifier(String projectId) {
+
+        Project project = this.projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if (project == null)
+        {
+            throw new ProjectIdException("The project with id '"+projectId+"' does not exists");
+        }
+        projectRepository.deleteById(project.getId());
     }
 }

@@ -42,13 +42,28 @@ public class ProjectController {
 
     @GetMapping(value = "/project/{projectId}")
     public ResponseEntity<?> getProjectById(@PathVariable String projectId){
+        return new ResponseEntity<>(this.projectService.findProjectIdentifier(projectId),HttpStatus.OK);
+    }
 
-        Project project = this.projectService.findProjectIdentifier(projectId);
+    @GetMapping(value = "/project")
+    public ResponseEntity<?> getAllProjects() {
+        return new ResponseEntity<>(this.projectService.findAllProjects(), HttpStatus.OK);
+    }
 
-        if (project == null)
-        {
-             throw new ProjectIdException("Poject ID '"+projectId+"' does not exists");
+    @DeleteMapping(value = "/project/{projectId}")
+    public ResponseEntity<?> deleteByProjectIdentifier(@PathVariable String projectId) {
+
+        projectService.deleteProjectByProjectIdentifier(projectId);
+        return new ResponseEntity<String>("Project with ID '"+projectId+"' was deleted", HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/project")
+    public ResponseEntity<?> updateProject(@Valid @RequestBody Project project, BindingResult result){
+
+        ResponseEntity<?> error = this.mapValidationErrorService.mapValidationError(result);
+        if (error != null) {
+            return error;
         }
-        return new ResponseEntity<>(project,HttpStatus.OK);
+        return new ResponseEntity<>(projectService.saveOrUpdateProject(project), HttpStatus.CREATED);
     }
 }
