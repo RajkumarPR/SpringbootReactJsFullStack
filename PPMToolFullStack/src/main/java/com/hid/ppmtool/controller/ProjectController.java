@@ -64,6 +64,6 @@ public class ProjectController {
         if (error != null) {
             return error;
         }
-        return new ResponseEntity<>(projectService.saveOrUpdateProject(project), HttpStatus.CREATED);
+        return new ResponseEntity<>(projectService.saveOrUpdateProject(project), HttpStatus.OK);
     }
 }
