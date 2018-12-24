@@ -32,16 +32,20 @@ public class Project implements Serializable {
     @NotBlank(message = "Project description is required")
     private String description;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date created_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updated_At;
 
     public Project() {

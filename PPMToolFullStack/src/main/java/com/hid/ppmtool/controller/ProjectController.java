@@ -22,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin
 public class ProjectController {
 
     @Autowired
