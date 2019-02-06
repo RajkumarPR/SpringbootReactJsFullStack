@@ -32,19 +32,16 @@ public class Project implements Serializable {
     @NotBlank(message = "Project description is required")
     private String description;
 
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(updatable = false)
     private Date created_At;
 
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updated_At;
 
@@ -55,6 +52,7 @@ public class Project implements Serializable {
     protected void onCreate(){
         this.created_At = new Date();
     }
+
     @PreUpdate
     protected void onUpdate(){
         this.updated_At = new Date();
